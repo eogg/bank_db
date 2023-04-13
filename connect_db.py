@@ -1,16 +1,18 @@
 import mysql.connector
+import database_functions
 
-def connect_to_db():
-    return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='113377',
-        database = 'bank_database'
-    )
+connection = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
+cursor = connection.cursor()
+# testQuery = ("SELECT * FROM bank_database.user")
+# cursor.execute(testQuery)
+# for item in cursor:
+#     for thing in item:
+#         print(thing, end = ", ")
+#     print()
 
-if __name__ == '__main__':
-    connection = connect_to_db()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM USER")
-    for x in cursor:
-        print(x)
+
+acID = int(input("Enter your Account ID: "))
+acPw = int(input("Enter your Pin Code: "))
+
+
+getBalance()

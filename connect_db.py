@@ -15,4 +15,4 @@ acID = int(input("Enter your Account ID: "))
 acPw = int(input("Enter your Pin Code: "))
 
 
-getBalance()
+getBalance(acID, acPW)

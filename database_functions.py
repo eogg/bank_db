@@ -13,6 +13,7 @@ def getBalance():
 def deposit(depo):
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
+    cursor = connect.cursor()
     test = cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     if(test.len() is None):
         depo = int(input("How much would you like to deposit into your account?"))

@@ -11,12 +11,11 @@ for item in cursor:
     print()
 
 
-acID = int(input("Enter your Account ID: "))
-acPW = int(input("Enter your Pin Code: "))
 
 
-database_functions.getBalance(acID, acPW)
-database_functions.deposit(acID, acPW, 8999)
+
+database_functions.getBalance()
+database_functions.deposit(8999)
 
 # By End of Week - Students have created SQL tables needed for the app and have successfully created all (or most) 
 # functions for all tasks (check balance, deposit, withdraw, create account, delete account, modify account) 

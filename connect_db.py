@@ -9,7 +9,7 @@ for item in cursor:
     for thing in item:
         print(thing, end = ", ")
     print()
-
+\
 
 
 

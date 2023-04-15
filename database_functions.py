@@ -1,11 +1,11 @@
 import mysql.connector
 
 connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
+cursor = connect.cursor()
 
 def getBalance():
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
-    cursor = connect.cursor()
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     for item in cursor:
         print(item[0])
@@ -13,10 +13,7 @@ def getBalance():
 def deposit(depo):
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
-    cursor = connect.cursor()
-    test = cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     depo = int(input("How much would you like to deposit into your account?"))
-    cursor = connect.cursor()
     cursor.execute(f'UPDATE bank_database.user SET balance = balance + {depo} WHERE accountid = {acID} AND pin_code = {acPW}')
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     for item in cursor:

@@ -1,6 +1,6 @@
 import mysql.connector
 
-connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '12345678')
+connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
 cursor = connect.cursor()
 
 def getBalance():

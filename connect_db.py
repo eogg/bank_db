@@ -1,7 +1,7 @@
 import mysql.connector
 import database_functions
 
-connection = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
+connection = mysql.connector.connect(user = 'root', database = 'bank_database',password = '12345678')
 cursor = connection.cursor()
 testQuery = ("SELECT * FROM bank_database.user")
 cursor.execute(testQuery)

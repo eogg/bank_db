@@ -1,6 +1,6 @@
 import mysql.connector
 
-connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
+connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '12345678')
 cursor = connect.cursor()
 
 def getBalance():
@@ -28,5 +28,19 @@ def widthdraw():
     for item in cursor:
         print(f'Successfully widthdrew ${amt} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
     
-    
+def create_account():
+    acID = int(input("Enter your Account ID: "))
+    acPW = int(input("Enter your Pin Code: "))
+    amt = int(input("How much would you like to initially deposit into your account? "))
+    indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
+    while True:
+        pin = int(input("Please enter the pin you'd like to use for your account"))
+        pin2 = int(input("Please enter the pin again."))
+        if(pin == pin2):
+            break
+        else:
+            print("Please try again.")
+            continue
+    cursor.execute(f'INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({acID}, {acPW}, {amt}, {indob}, {pin})')
+        
 # def update_account(accountID, accountPassword):

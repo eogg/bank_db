@@ -1,7 +1,8 @@
 import mysql.connector
+import random
 
 connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
-cursor = connect.cursor()
+cursor = connect.cursor(buffered=True)
 
 def getBalance():
     acID = int(input("Enter your Account ID: "))
@@ -29,7 +30,7 @@ def widthdraw():
         print(f'Successfully widthdrew ${amt} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
     
 def create_account():
-    username = input("What name would you like the account to be under? ")
+    username = str(input("What name would you like the account to be under? "))
     amt = int(input("How much would you like to initially deposit into your account? "))
     indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
     while True:
@@ -40,4 +41,19 @@ def create_account():
         else:
             print("Please try again.")
             continue
-    cursor.execute(f'INSERT INTO bank_database.user (accountname, balance, dob, pin_code) VALUES ({username}, {amt}, {indob}, {pin})')
+    while True:
+        accid = random.randint(100000, 999999)
+        check = cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {accid}')
+        if(check is None):
+            break
+        else: 
+            continue
+    cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accid}, \"{username}\", {amt}, \"{indob}\", {pin})")
+
+def printOutEntireTable():
+    testQuery = ("SELECT * FROM bank_database.user")
+    cursor.execute(testQuery)
+    for item in cursor:
+        for thing in item:
+            print(thing, end = ", ")
+        print()

@@ -40,5 +40,9 @@ def user_select():
         # else:
         #     print("That's not a valid choice, please try again.")
 
+
+
 user_selection_menu()
+
 user_select()
+database_functions.printOutEntireTable()

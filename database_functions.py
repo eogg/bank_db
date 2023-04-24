@@ -1,10 +1,12 @@
 import mysql.connector
 import random
+import ui_functions
 
 connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
 cursor = connect.cursor(buffered=True)
 
 def getBalance():
+    ui_functions.clear()
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
@@ -12,6 +14,7 @@ def getBalance():
         print(item[0])
 
 def deposit():
+    ui_functions.clear()
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
     depo = int(input("How much would you like to deposit into your account? "))
@@ -21,6 +24,7 @@ def deposit():
         print(f'Successfully deposited ${depo} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
 
 def widthdraw():
+    ui_functions.clear()
     acID = int(input("Enter your Account ID: "))
     acPW = int(input("Enter your Pin Code: "))
     amt = int(input("How much would you like to withdraw from your account? "))
@@ -30,9 +34,10 @@ def widthdraw():
         print(f'Successfully widthdrew ${amt} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
     
 def create_account():
+    ui_functions.clear()
     username = str(input("What name would you like the account to be under? "))
-    amt = int(input("How much would you like to initially deposit into your account? "))
     indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
+    amt = int(input("How much would you like to initially deposit into your account? "))
     while True:
         pin = int(input("Please enter the pin you'd like to use for your account: "))
         pin2 = int(input("Please enter the pin again. "))
@@ -50,7 +55,20 @@ def create_account():
             continue
     cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accid}, \"{username}\", {amt}, \"{indob}\", {pin})")
 
+def modify_name():
+    ui_functions.clear()
+    accId = str(input("What is your account ID?"))
+    while True:
+        accPw = input("What is your account Pin?")
+        accPw2 = input("Enter your Pin again.")
+        if accPw != accPw2:
+            print("The pins you entered do not match, try again.")
+            continue
+        else:
+            break
+
 def printOutEntireTable():
+    ui_functions.clear()
     testQuery = ("SELECT * FROM bank_database.user")
     cursor.execute(testQuery)
     for item in cursor:

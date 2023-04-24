@@ -24,7 +24,6 @@ def deposit():
     for item in cursor:
         print(f'Successfully deposited ${depo} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
-    cursor.close()
 
 def widthdraw():
     ui_functions.clear()
@@ -36,7 +35,6 @@ def widthdraw():
     for item in cursor:
         print(f'Successfully widthdrew ${amt} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
-    cursor.close()
     
 def create_account():
     ui_functions.clear()
@@ -60,7 +58,6 @@ def create_account():
             continue
     cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accid}, \"{username}\", {amt}, \"{indob}\", {pin})")
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
-    cursor.close()
 
 # def modify_name():
 #     ui_functions.clear()

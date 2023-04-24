@@ -1,8 +1,9 @@
 import mysql.connector
 import random
 import ui_functions
+import passwordIn
 
-connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = '113377')
+connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = passwordIn.password)
 cursor = connect.cursor(buffered=True)
 
 def getBalance():
@@ -22,6 +23,8 @@ def deposit():
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     for item in cursor:
         print(f'Successfully deposited ${depo} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
+    connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+    cursor.close()
 
 def widthdraw():
     ui_functions.clear()
@@ -32,6 +35,8 @@ def widthdraw():
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     for item in cursor:
         print(f'Successfully widthdrew ${amt} to account number {acID}. The new balance for account number {acID} is {item[0]}.')
+    connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+    cursor.close()
     
 def create_account():
     ui_functions.clear()
@@ -54,18 +59,23 @@ def create_account():
         else: 
             continue
     cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accid}, \"{username}\", {amt}, \"{indob}\", {pin})")
+    connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+    cursor.close()
 
-def modify_name():
-    ui_functions.clear()
-    accId = str(input("What is your account ID?"))
-    while True:
-        accPw = input("What is your account Pin?")
-        accPw2 = input("Enter your Pin again.")
-        if accPw != accPw2:
-            print("The pins you entered do not match, try again.")
-            continue
-        else:
-            break
+# def modify_name():
+#     ui_functions.clear()
+#     accId = str(input("What is your account ID?"))
+#     while True:
+#         accPw = input("What is your account Pin?")
+#         accPw2 = input("Enter your Pin again.")
+#         if accPw != accPw2:
+#             print("The pins you entered do not match, try again.")
+#             continue
+#         else:
+#             break
+#     cursor.execute(f"SELECT * FROM bank_database.user WHERE accountid = {accId} AND pin_code = {accPw}")
+#     for item in cursor:
+
 
 def printOutEntireTable():
     ui_functions.clear()

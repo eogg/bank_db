@@ -15,6 +15,13 @@ def user_selection_menu():
     print("3. Withdraw from your account")
     print("4. Modify your account")
 
+def modification_selection_menu():
+    clear()
+    print("\n--------------------------USER SELECTION--------------------------")
+    print("\nWould you like to:")
+    print("1. Update your account name")
+    print("2. Update your account pin")
+
 def user_select():
     while isActive:
         user_choice = int(input("\nEnter the number next to your choice (1-5): "));
@@ -28,7 +35,8 @@ def user_select():
             database_functions.widthdraw()
             break
         # elif user_choice == 4:
-            
+        #     modification_selection_menu()
         #     break
-        # else:
-        #     print("That's not a valid choice, please try again.")
+        else:
+            clear()
+            print("That's not a valid choice, please try again.")

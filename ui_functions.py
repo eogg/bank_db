@@ -3,8 +3,10 @@ import mysql.connector
 import database_functions
 isActive = True
 
+# def clear():
+#     os.system('cls')
 def clear():
-    os.system('cls')
+    os.system("clear")
 
 def user_selection_menu():
     clear()

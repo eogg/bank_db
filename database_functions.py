@@ -9,15 +9,28 @@ cursor = connect.cursor(buffered=True)
 def getBalance():
     ui_functions.clear()
     acID = int(input("Enter your Account ID: "))
-    acPW = int(input("Enter your Pin Code: "))
+    acPW = int(input("Enter your 6 Digit Pin Code: "))
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
     for item in cursor:
         print(item[0])
 
 def deposit():
     ui_functions.clear()
-    acID = int(input("Enter your Account ID: "))
-    acPW = int(input("Enter your Pin Code: "))
+    while True:
+        acID = int(input("Enter your Account ID: "))
+        cursor.execute(f'SELECT accountid FROM bank_database.user')
+        if(cursor is None):
+            ui_functions.clear()
+            print("The account ID you input does not exist, please try again")
+            continue
+        acPW = int(input("Enter your 6 Digit Pin Code: "))
+        cursor.execute(f'SELECT * FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
+        if(cursor is None):
+            ui_functions.clear()
+            print("The account ID you input does not match up with the account pin, please try again.")
+            continue
+        else: 
+            break
     depo = int(input("How much would you like to deposit into your account? "))
     cursor.execute(f'UPDATE bank_database.user SET balance = balance + {depo} WHERE accountid = {acID} AND pin_code = {acPW}')
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
@@ -28,7 +41,7 @@ def deposit():
 def widthdraw():
     ui_functions.clear()
     acID = int(input("Enter your Account ID: "))
-    acPW = int(input("Enter your Pin Code: "))
+    acPW = int(input("Enter your 6 Digit Pin Code: "))
     amt = int(input("How much would you like to withdraw from your account? "))
     cursor.execute(f'UPDATE bank_database.user SET balance = balance - {amt} WHERE accountid = {acID} AND pin_code = {acPW}')
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
@@ -51,8 +64,8 @@ def create_account():
             continue
     while True:
         accid = random.randint(100000, 999999)
-        check = cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {accid}')
-        if(check is None):
+        cursor.execute(f'SELECT * FROM bank_database.user WHERE accountid = {accid}')
+        if(cursor is None):
             break
         else: 
             continue

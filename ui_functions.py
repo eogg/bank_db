@@ -6,6 +6,7 @@ def user_selection_menu():
     print("\nWould you like to:")
     print("1. Create an Account")
     print("2. Log in")
+    home_user_select()
     
 def user_log_in_selection_menu():
     database_functions.clear_console()
@@ -15,6 +16,8 @@ def user_log_in_selection_menu():
     print("2. Make a deposit")
     print("3. Widthdraw from account")
     print("4. Update account information")
+    print("5. Log out")
+    logIn_user_select()
 
 def modification_selection_menu():
     database_functions.clear_console()
@@ -26,7 +29,7 @@ def modification_selection_menu():
 def logIn_user_select():
     while True:
         try:
-            user_choice = int(input("\nEnter the number next to your choice (1-4): "))
+            user_choice = int(input("\nEnter the number next to your choice (1-5): "))
         except TypeError:
             print("That's not a valid choice, please try again.")
         if user_choice == 1:
@@ -40,6 +43,9 @@ def logIn_user_select():
             break
         elif user_choice == 4:
             modification_selection_menu()
+            break
+        elif user_choice == 5:
+            database_functions.logOut()
             break
         else:
             database_functions.clear_console()
@@ -57,7 +63,6 @@ def home_user_select():
             break
         elif user_choice == 2:
             database_functions.logIn()
-            user_log_in_selection_menu()
             break
         else:
             database_functions.clear_console()

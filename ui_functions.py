@@ -2,15 +2,14 @@ import database_functions
 
 def user_selection_menu():
     database_functions.clear_console()
-    print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Create an Account")
     print("2. Log in")
+    print("3. Log in as administrator")
     home_user_select()
     
 def user_log_in_selection_menu():
     database_functions.clear_console()
-    print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Get balance")
     print("2. Make a deposit")
@@ -22,11 +21,18 @@ def user_log_in_selection_menu():
 
 def modification_selection_menu():
     database_functions.clear_console()
-    print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Update your account name")
     print("2. Update your account pin")
     modification_user_select()
+
+def admin_log_in_selection_menu():
+    database_functions.clear_console()
+    print("\nWould you like to:")
+    print("1. Create a new admin account")
+    print("2. Delete an account")
+    print("3. Update an account's information")
+    print("4. Log Out")
 
 def logIn_user_select():
     while True:
@@ -54,7 +60,6 @@ def logIn_user_select():
             break
         else:
             database_functions.clear_console()
-            print("That's not a valid choice, please try again.")
 
 def home_user_select():
     while True:
@@ -64,14 +69,16 @@ def home_user_select():
             print("That's not a valid choice, please try again.")
 
         if user_choice == 1:
-            database_functions.create_account()
+            database_functions.create_account("u")
             break
         elif user_choice == 2:
-            database_functions.logIn()
+            database_functions.logIn("u")
+            break
+        elif user_choice == 3:
+            database_functions.logIn("a")
             break
         else:
             database_functions.clear_console()
-            print("That's not a valid choice, please try again.")
 
 def modification_user_select():
     while True:
@@ -81,10 +88,8 @@ def modification_user_select():
             print("That's not a valid choice, try again.")
 
         if user_choice == 1:
-            database_functions.modify_name()
+            database_functions.modify_name("u")
             break
         elif user_choice == 2:
-            database_functions.modify_pin()
+            database_functions.modify_pin("u")
             break
-        else: 
-            print("That is not a valid choice, please try again.")

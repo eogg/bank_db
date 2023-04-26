@@ -107,14 +107,17 @@ def logOut():
     logInAccID = 0
     ui_functions.user_selection_menu()
 
-# def modify_name():
-#     global logInAccID
-#     global logInACCPW
+def modify_name():
+    global logInAccID
+    global logInACCPW
+    newName = str(input("Enter the new name of the account: "))
+    cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
 
-#     cursor.execute(f"SELECT * FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}")
-#     for item in cursor:
-
-
+def modify_pin():
+    global logInAccID
+    global logInACCPW
+    newPin = input("Enter the new pin of the account: ")
+    cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
 
 def printOutEntireTable():
     clear_console()

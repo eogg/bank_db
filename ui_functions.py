@@ -1,21 +1,14 @@
-import os
-import mysql.connector
 import database_functions
 
-def clear():
-    os.system('cls')
-# def clear():
-#     os.system("clear")
-
 def user_selection_menu():
-    clear()
+    database_functions.clear_console()
     print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Create an Account")
     print("2. Log in")
     
 def user_log_in_selection_menu():
-    clear()
+    database_functions.clear_console()
     print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Get balance")
@@ -24,7 +17,7 @@ def user_log_in_selection_menu():
     print("4. Update account information")
 
 def modification_selection_menu():
-    clear()
+    database_functions.clear_console()
     print("\n--------------------------USER SELECTION--------------------------")
     print("\nWould you like to:")
     print("1. Update your account name")
@@ -45,7 +38,7 @@ def home_user_select():
             logIn_user_select()
             break
         else:
-            clear()
+            database_functions.clear_console()
             print("That's not a valid choice, please try again.")
 
 def logIn_user_select():
@@ -67,5 +60,5 @@ def logIn_user_select():
             modification_selection_menu()
             break
         else:
-            clear()
+            database_functions.clear_console()
             print("That's not a valid choice, please try again.")

@@ -68,6 +68,16 @@ def create_account():
     print("Account successfully created!")
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
 
+def delete_account():
+    cursor.reset()
+    global logInACCPW
+    global logInAccID
+    cursor.execute(f'DELETE FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+    print("Account successfully deleted.")
+    logInAccID = 0
+    logInACCPW = 0
+    connect.commit()
+
 def logIn():
     global logInAccID
     global logInACCPW

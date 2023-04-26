@@ -2,10 +2,10 @@ import os
 import mysql.connector
 import database_functions
 
-# def clear():
-#     os.system('cls')
 def clear():
-    os.system("clear")
+    os.system('cls')
+# def clear():
+#     os.system("clear")
 
 def user_selection_menu():
     clear()
@@ -36,6 +36,7 @@ def home_user_select():
             user_choice = int(input("\nEnter the number next to your choice (1 or 2): "))
         except TypeError:
             print("That's not a valid choice, please try again.")
+
         if user_choice == 1:
             database_functions.create_account()
             break
@@ -55,16 +56,16 @@ def logIn_user_select():
             print("That's not a valid choice, please try again.")
         if user_choice == 1:
             database_functions.getBalance()
-            break;
+            break
         elif user_choice == 2:
             database_functions.deposit()
-            break;
+            break
         elif user_choice == 3:
             database_functions.widthdraw()
-            break;
+            break
         elif user_choice == 4:
             modification_selection_menu()
-            break;
+            break
         else:
             clear()
             print("That's not a valid choice, please try again.")

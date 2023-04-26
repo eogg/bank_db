@@ -70,7 +70,7 @@ def create_account():
         else: 
             continue
     cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accid}, \"{username}\", {amt}, \"{indob}\", {pin})")
-    connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+    cursor.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
 
 # def modify_name():
 #     ui_functions.clear()
@@ -95,3 +95,5 @@ def printOutEntireTable():
         for thing in item:
             print(thing, end = ", ")
         print()
+
+create_account()

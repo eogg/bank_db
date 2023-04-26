@@ -26,6 +26,7 @@ def modification_selection_menu():
     print("\nWould you like to:")
     print("1. Update your account name")
     print("2. Update your account pin")
+    modification_user_select()
 
 def logIn_user_select():
     while True:
@@ -71,3 +72,19 @@ def home_user_select():
         else:
             database_functions.clear_console()
             print("That's not a valid choice, please try again.")
+
+def modification_user_select():
+    while True:
+        try:
+            user_choice = int(input("\nEnter the number next to your choice (1 or 2): "))
+        except TypeError:
+            print("That's not a valid choice, try again.")
+
+        if user_choice == 1:
+            database_functions.modify_name()
+            break
+        elif user_choice == 2:
+            database_functions.modify_pin()
+            break
+        else: 
+            print("That is not a valid choice, please try again.")

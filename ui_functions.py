@@ -23,24 +23,6 @@ def modification_selection_menu():
     print("1. Update your account name")
     print("2. Update your account pin")
 
-def home_user_select():
-    while True:
-        try:
-            user_choice = int(input("\nEnter the number next to your choice (1 or 2): "))
-        except TypeError:
-            print("That's not a valid choice, please try again.")
-
-        if user_choice == 1:
-            database_functions.create_account()
-            break
-        elif user_choice == 2:
-            user_log_in_selection_menu()
-            logIn_user_select()
-            break
-        else:
-            database_functions.clear_console()
-            print("That's not a valid choice, please try again.")
-
 def logIn_user_select():
     while True:
         try:
@@ -58,6 +40,24 @@ def logIn_user_select():
             break
         elif user_choice == 4:
             modification_selection_menu()
+            break
+        else:
+            database_functions.clear_console()
+            print("That's not a valid choice, please try again.")
+
+def home_user_select():
+    while True:
+        try:
+            user_choice = int(input("\nEnter the number next to your choice (1 or 2): "))
+        except TypeError:
+            print("That's not a valid choice, please try again.")
+
+        if user_choice == 1:
+            database_functions.create_account()
+            break
+        elif user_choice == 2:
+            database_functions.logIn()
+            user_log_in_selection_menu()
             break
         else:
             database_functions.clear_console()

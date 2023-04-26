@@ -26,16 +26,11 @@ def deposit():
     clear_console()
     while True:
         acID = int(input("Enter your Account ID: "))
-        rows_count = cursor.execute(f'SELECT accountid FROM bank_database.user WHERE accountid = {acID}')
-        if(rows_count is None):
-            clear_console()
-            print("The account ID you input does not exist, please try again")
-            continue
         acPW = int(input("Enter your 6 Digit Pin Code: "))
         cursor.execute(f'SELECT * FROM bank_database.user WHERE accountid = {acID} AND pin_code = {acPW}')
         if(cursor is None):
             clear_console()
-            print("The account ID you input does not match up with the account pin, please try again.")
+            print("Invalid username or password, try again.")
             continue
         else: 
             break
@@ -82,6 +77,26 @@ def create_account():
     cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accID}, \"{username}\", {amt}, \"{indob}\", {pin})")
     print("Account successfully created!")
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+
+def logIn():
+    cursor.reset()
+    while True:
+        accID = input("Please enter your account ID: ")
+        accPW = input("Please enter your account Pin: ")
+        cursor.execute(f'SELECT accountid FROM bank_database.user WHERE accountid = {accID} AND pin_code = {accPW}')
+        temp = 0
+        for thing in cursor:
+            for thingy in thing:
+                temp = thingy
+        if(temp == 0):
+            clear_console()
+            print("Invalid username or password, try again.")
+            continue
+        else:
+            break
+    cursor.execute(f'SELECT accountname FROM bank_database.user WHERE accountid = {accID} AND pin_code = {accPW}')
+    for item in cursor:
+        print(f"Successfully logged into {item[0]}'s account.")
 
 # def modify_name():
 #     clear()

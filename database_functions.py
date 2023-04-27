@@ -15,10 +15,10 @@ logInAccID = 0
 logInACCPW = 0
 
 
-def clear_console():
-    os.system('cls')
 # def clear_console():
-#     os.system("clear")
+#     os.system('cls')
+def clear_console():
+    os.system("clear")
 
 def getBalance():
     global logInAccID
@@ -169,6 +169,7 @@ def logIn(accType):
             logInAccID = input("Please enter your admin account ID: ")
             logInACCPW = input("Please enter your admin accoount PIN: ")
             cursor.execute(f'SELECT accountid FROM bank_database.admin WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+            temp = 0
             for item in cursor:
                 for thing in item:
                     temp = thing
@@ -190,14 +191,33 @@ def logOut():
     logInAccID = 0
     exitProgram()
 
-def modify_name():
+def modify_name(accType):
     global logInAccID
     global logInACCPW
-    newName = str(input("Enter the new name of the account: "))
-    cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
-    print(f"Successfully changed the name of account {logInAccID} to {newName}")
-    exitProgram()
-    ui_functions.backToUserSignInMenu("u")
+    if accType == "u":
+        newName = str(input("Enter the new name of the account: "))
+        cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        print(f"Successfully changed the name of account {logInAccID} to {newName}")
+        exitProgram()
+        ui_functions.backToUserSignInMenu("u")
+    elif accType == "a":
+        clear_console()
+        print("\nWould you like to:")
+        print("1. Change the name of a user's account")
+        print("2. Change the name of another admin's account")
+        print("3. Change the name of your own account")
+        while True:
+            try:
+                choice = input("Choose the number next to the action you want: ")
+                break
+            except ValueError:
+                print("That is not a valid choice, please try again.")
+        
+        newName = str(input("Enter the new name of the account: "))
+        cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        print(f"Successfully changed the name of account {logInAccID} to {newName}")
+        exitProgram()
+        ui_functions.backToUserSignInMenu("u")
 
 def modify_pin():
     global logInAccID
@@ -207,6 +227,21 @@ def modify_pin():
     print(f"Successfully changed the pin of account {logInAccID} to {newPin}") 
     exitProgram()
     ui_functions.backToUserSignInMenu("u")
+
+def modify_account(accType):
+    while True:
+        try:
+            choice = input("Would you like to update the name of an account (1) or the pin (2)?: ")
+            break
+        except ValueError: 
+            print("That is not a valid choice, please try again.")
+            
+    if choice == 1:
+        modify_name(accType)
+    elif choice == 2:
+        modify_pin(accType)
+    else:
+        print("That's not a valid choice, please try again.")
 
 def printOutEntireTable():
     clear_console()

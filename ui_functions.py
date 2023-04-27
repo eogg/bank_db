@@ -34,6 +34,7 @@ def admin_log_in_selection_menu():
     print("2. Delete an account")
     print("3. Update an account's information")
     print("4. Log Out")
+    logIn_admin_select()
 
 def logIn_user_select():
     while True:
@@ -105,5 +106,12 @@ def logIn_admin_select():
     while True:
         try:
             user_choice = input("\nEnter the number next to your choice (1-6): ")
+            break
         except ValueError:
             print("That is not a valid choice, please try again.")
+    if user_choice == 1:
+        database_functions.create_account("a")
+    if user_choice == 2:
+        database_functions.delete_account("a")
+    if user_choice == 3:
+        database_functions.modify_account("a")

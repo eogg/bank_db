@@ -4,16 +4,21 @@ import ui_functions
 import passwordIn
 import os
 
-connect = mysql.connector.connect(user = 'root', database = 'bank_database',password = passwordIn.password)
+connect = mysql.connector.connect(
+    host = "localhost",
+    user = 'root',
+    database = 'bank_database',
+    password = passwordIn.password)
+
 cursor = connect.cursor(buffered=True)
 logInAccID = 0
 logInACCPW = 0
 
 
-# def clear_console():
-#     os.system('cls')
 def clear_console():
-    os.system("clear")
+    os.system('cls')
+# def clear_console():
+#     os.system("clear")
 
 def getBalance():
     global logInAccID
@@ -21,6 +26,8 @@ def getBalance():
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
     for item in cursor:
         print(f"Your account balance is ${item[0]}")
+    exitProgram()
+    ui_functions.backToUserSignInMenu("u")
 
 def deposit():
     cursor.reset()
@@ -32,6 +39,8 @@ def deposit():
     for item in cursor:
         print(f'Successfully deposited ${depo} to account number {logInAccID}. The new balance for account number {logInAccID} is {item[0]}.')
     connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+    exitProgram()
+    ui_functions.backToUserSignInMenu("u")
 
 def widthdraw():
     global logInAccID
@@ -42,7 +51,7 @@ def widthdraw():
         cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         balance = 0
         for item in cursor:
-            for thing in cursor:
+            for thing in item:
                 balance = thing
         if amt < balance and amt > 0:
             cursor.execute(f'UPDATE bank_database.user SET balance = balance - {amt} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
@@ -50,11 +59,16 @@ def widthdraw():
             for item in cursor:
                 print(f'Successfully widthdrew ${amt} to account number {logInAccID}. The new balance for account number {logInACCPW} is {item[0]}.')
             connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+            exitProgram()
+            ui_functions.backToUserSignInMenu("u")
             break
         else:
             print("The amount of money you're trying to withdraw is larger than your balance, please try again.")
     
+    
 def create_account(accType):
+    global logInAccID
+    global logInACCPW
     if accType == "u":
         cursor.reset()
         username = str(input("What name would you like the account to be under? "))
@@ -79,6 +93,10 @@ def create_account(accType):
         cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accID}, \"{username}\", {amt}, \"{indob}\", {pin})")
         print("Account successfully created!")
         connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+        logInAccID = accID
+        logInACCPW = pin
+        exitProgram()
+        ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
         cursor.reset()
         username = str(input("What name would you like the account to be under? "))
@@ -102,23 +120,32 @@ def create_account(accType):
         cursor.execute(f"INSERT INTO bank_database.admin (accountid, accountname, dob, pin_code) VALUES ({accID}, \"{username}\", \"{indob}\", {pin})")
         print("Account successfully created!")
         connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+        logInAccID = accID
+        logInACCPW = pin
+        exitProgram()
+        ui_functions.backToUserSignInMenu("a")
 
 def delete_account():
     cursor.reset()
     global logInACCPW
     global logInAccID
-    cursor.execute(f'DELETE FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
-    print("Account successfully deleted.")
-    logInAccID = 0
-    logInACCPW = 0
-    connect.commit()
+    sure = str(input("Are you sure? y/n: "))
+    if sure == "y":
+        cursor.execute(f'DELETE FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        print("Account successfully deleted.")
+        logInAccID = 0
+        logInACCPW = 0
+        connect.commit()
+    else:
+        print("Account deletion not completed.")
+    exitProgram()
 
 def logIn(accType):
     if accType == "u":
         global logInAccID
         global logInACCPW
-        cursor.reset()
         while True:
+            cursor.reset()
             logInAccID = input("Please enter your account ID: ")
             logInACCPW = input("Please enter your account PIN: ")
             cursor.execute(f'SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
@@ -134,34 +161,52 @@ def logIn(accType):
         cursor.execute(f'SELECT accountname FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         for item in cursor:
             print(f"Successfully logged into {item[0]}'s account.")
-        ui_functions.user_log_in_selection_menu()
+        exitProgram()
+        ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
-        global logInAccID
-        global logInACCPW
-        cursor.reset()
         while True:
+            cursor.reset()
             logInAccID = input("Please enter your admin account ID: ")
             logInACCPW = input("Please enter your admin accoount PIN: ")
             cursor.execute(f'SELECT accountid FROM bank_database.admin WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
+                print("Invalid username or password, try again.")
+                continue
+            else:
+                break
+        cursor.execute(f'SELECT accountname FROM bank_database.admin WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        for item in cursor:
+            print(f"Successfully logged into {item[0]}'s account.")
+        ui_functions.backToUserSignInMenu("a")
+        exitProgram()
 
 def logOut():
     global logInAccID
     global logInACCPW
     logInACCPW = 0
     logInAccID = 0
-    ui_functions.user_selection_menu()
+    exitProgram()
 
 def modify_name():
     global logInAccID
     global logInACCPW
     newName = str(input("Enter the new name of the account: "))
     cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+    print(f"Successfully changed the name of account {logInAccID} to {newName}")
+    exitProgram()
+    ui_functions.backToUserSignInMenu("u")
 
 def modify_pin():
     global logInAccID
     global logInACCPW
     newPin = input("Enter the new pin of the account: ")
     cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+    print(f"Successfully changed the pin of account {logInAccID} to {newPin}") 
+    exitProgram()
+    ui_functions.backToUserSignInMenu("u")
 
 def printOutEntireTable():
     clear_console()
@@ -172,30 +217,15 @@ def printOutEntireTable():
             print(thing, end = ", ")
         print()
 
-
-#ADMIN FUNCTIONS:
-
-def createAdminAccount():
-    cursor.reset()
-    username = str(input("What name would you like the account to be under? "))
-    indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
-    amt = int(input("How much would you like to initially deposit into your account? "))
+def exitProgram():
     while True:
-        pin = int(input("Please enter the pin you'd like to use for your account: "))
-        pin2 = int(input("Please enter the pin again. "))
-        if(pin == pin2):
+        sure = str(input("Would you like keep going? y/n: "))
+        if sure.lower() == "n":
+            print("Thank you for using this banking app.")
+            exit()
+        elif sure.lower() == "y":
             break
         else:
-            print("Please try again.")
-            continue
+            print("That option is not valid, please try again.")
 
-    while True:
-        accID = random.randint(100000, 999999)
-        rows_count = cursor.execute(f"SELECT EXISTS(SELECT * FROM bank_database.admin WHERE accountid = {accID})")
-        if(rows_count is None):
-            break
-        else: 
-            continue
-    cursor.execute(f"INSERT INTO bank_database.admin (accountid, accountname, balance, dob, pin_code) VALUES ({accID}, \"{username}\", {amt}, \"{indob}\", {pin})")
-    print("Account successfully created!")
-    connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
+

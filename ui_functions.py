@@ -7,7 +7,7 @@ def home_selection_menu():
     print("2. Log in")
     print("3. Log in as administrator")
     print("4. Exit baking system")
-    home_user_select()
+    home_select()
 
 def home_select():
     av_choices = [1, 2, 3, 4]
@@ -145,10 +145,7 @@ def modification_select(accType):
 
 
 def backToUserSignInMenu(typeAcc):
-    if typeAcc == "u":
-        user_log_in_selection_menu()
-    elif typeAcc == "a":
-        admin_log_in_selection_menu()
+        log_in_selection_menu(typeAcc)
 
 
 def user_picker(av_choices):

@@ -68,7 +68,7 @@ def logIn_select(accType):
                 modification_selection_menu("u")
                 break
             elif user_choice == 5:
-                database_functions.delete_account()
+                database_functions.delete_account("u", 1)
                 break
             elif user_choice == 6:
                 database_functions.logOut()

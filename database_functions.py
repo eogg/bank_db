@@ -143,7 +143,7 @@ def create_account(accType):
         while True:
             while True:
                 try:
-                    pin = int(input("\nPlease enter the pin you'd like to use for your account: "))
+                    pin = int(input("Please enter the pin you'd like to use for your account: "))
                     break
                 except ValueError:
                     print("That is not a valid pin, try again.") 
@@ -168,7 +168,7 @@ def create_account(accType):
                 continue
         cursor.execute(f"INSERT INTO bank_database.admin (accountid, accountname, dob, pin_code) VALUES ({accID}, \"{username}\", \"{indob}\", {pin})")
         clear_console()
-        print("Account successfully created!")
+        print("Admin account successfully created!")
         connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
         logInAdminID = accID
         logInAdminPW = pin
@@ -193,8 +193,11 @@ def delete_account(accType, inType):
             cursor.reset()
             logInAccID = input("Please enter the user's account ID: ")
             logInACCPW = input("Please enter the user's account PIN: ")
-            temp = cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
-            if(temp is None):
+            cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 print("Invalid username or password, try again.")
                 continue
             else:
@@ -237,8 +240,11 @@ def logIn(accType):
             cursor.reset()
             logInAccID = input("Please enter your account ID: ")
             logInACCPW = input("Please enter your account PIN: ")
-            temp = cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
-            if(temp is None):
+            cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 print("Invalid username or password, try again.")
                 continue
             else:
@@ -252,8 +258,11 @@ def logIn(accType):
             cursor.reset()
             logInAdminID = input("Please enter your admin account ID: ")
             logInAdminPW = input("Please enter your admin accoount PIN: ")
-            temp = cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.admin WHERE accountid = {logInAdminID} AND pin_code = {logInAdminPW})')
-            if(temp is None):
+            cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.admin WHERE accountid = {logInAdminID} AND pin_code = {logInAdminPW})')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 print("Invalid username or password, try again.")
                 continue
             else:
@@ -280,8 +289,11 @@ def modify_name(accType, inType):
             cursor.reset()
             logInAccID = input("Please enter the user's account ID: ")
             logInACCPW = input("Please enter the user's account PIN: ")
-            temp = cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
-            if(temp is None):
+            cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 print("Invalid username or password, try again.")
                 continue
             else:
@@ -311,8 +323,11 @@ def modify_pin(accType, inType):
             cursor.reset()
             logInAccID = input("Please enter the user's account ID: ")
             logInACCPW = input("Please enter the user's account PIN: ")
-            temp = cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
-            if(temp is None):
+            cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 print("Invalid username or password, try again.")
                 continue
             else:

@@ -152,7 +152,7 @@ def backToUserSignInMenu(typeAcc):
 def user_picker(av_choices):
     while True:
         try:
-            user_choice = int(input("\nEnter the number next to your choice (1 - 4): "))
+            user_choice = int(input("\nEnter the number next to your choice: "))
         except ValueError:
             user_choice = None
 

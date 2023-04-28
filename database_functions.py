@@ -226,7 +226,10 @@ def delete_account(accType, inType):
         else:
             print("\nUser account deletion not completed.")
         exitProgram()
-        ui_functions.backToUserSignInMenu("u")
+        if inType == 1:
+            ui_functions.home_selection_menu()
+        else:
+            ui_functions.backToUserSignInMenu("a")
     elif accType == "a":
         cursor.reset()
         sure = str(input("Are you sure? y/n: "))
@@ -239,7 +242,7 @@ def delete_account(accType, inType):
         else:
             print("\nAdmin account deletion not completed.")
         exitProgram()
-        ui_functions.backToUserSignInMenu("a")
+        ui_functions.home_selection_menu()
 
 def logIn(accType):
     global logInAccID
@@ -288,7 +291,7 @@ def logOut():
     global logInACCPW
     logInACCPW = 0
     logInAccID = 0
-    exitProgram()
+    ui_functions.home_selection_menu()
 
 def modify_name(accType, inType):
     global logInAccID

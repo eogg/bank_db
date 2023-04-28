@@ -72,7 +72,7 @@ def create_account(accType):
     global logInACCPW
     if accType == "u":
         cursor.reset()
-        username = str(input("What name would you like the account to be under? "))
+        username = input("What name would you like the account to be under? ")
         indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
         amt = int(input("How much would you like to initially deposit into your account? "))
         while True:
@@ -100,7 +100,7 @@ def create_account(accType):
         ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
         cursor.reset()
-        username = str(input("What name would you like the account to be under? "))
+        username = input("What name would you like the account to be under? ")
         indob = input("Please enter your date of birth in the format of mm/dd/yyyy. ")
         while True:
             pin = int(input("Please enter the pin you'd like to use for your account: "))
@@ -126,35 +126,53 @@ def create_account(accType):
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 
-def delete_account(accType):
+def delete_account(accType, inType):
     global logInAccID
     global logInACCPW
     global logInAdminID
     global logInAdminPW
+    if accType == "a" and inType == 0:
+        while True:
+            cursor.reset()
+            logInAccID = input("Please enter the user's account ID: ")
+            logInACCPW = input("Please enter the user's account PIN: ")
+            cursor.execute(f'SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+            temp = 0
+            for thing in cursor:
+                for thingy in thing:
+                    temp = thingy
+            if(temp == 0):
+                print("Invalid username or password, try again.")
+                continue
+            else:
+                delete_account("u", 0)
+                break
     if accType == "u":
         cursor.reset()
         sure = str(input("Are you sure? y/n: "))
         if sure == "y":
             cursor.execute(f'DELETE FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
-            print("Account successfully deleted.")
+            print("\nUser account successfully deleted.")
             logInAccID = 0
             logInACCPW = 0
             connect.commit()
         else:
-            print("Account deletion not completed.")
+            print("\nUser account deletion not completed.")
         exitProgram()
+        ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
         cursor.reset()
         sure = str(input("Are you sure? y/n: "))
         if sure == "y":
             cursor.execute(f'DELETE FROM bank_database.admin WHERE accountid = {logInAdminID} AND pin_code = {logInAdminPW}')
-            print("Admin account successfully deleted.")
+            print("\nAdmin account successfully deleted.")
             logInAccID = 0
             logInACCPW = 0
             connect.commit()
         else:
-            print("Admin account deletion not completed.")
+            print("\nAdmin account deletion not completed.")
         exitProgram()
+        ui_functions.backToUserSignInMenu("a")
 
 def logIn(accType):
     global logInAccID
@@ -242,14 +260,38 @@ def modify_name(accType, inType):
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 
-def modify_pin(accType):
+def modify_pin(accType, inType):
     global logInAccID
     global logInACCPW
-    newPin = input("Enter the new pin of the account: ")
-    cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
-    print(f"Successfully changed the pin of account {logInAccID} to {newPin}") 
-    exitProgram()
-    ui_functions.backToUserSignInMenu("u")
+    global logInAdminID
+    global logInAdminPW
+    if accType == "u" and inType == 0:
+        while True:
+            cursor.reset()
+            logInAccID = input("Please enter the user's account ID: ")
+            logInACCPW = input("Please enter the user's account PIN: ")
+            cursor.execute(f'SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+            temp = 0
+            for thing in cursor:
+                for thingy in thing:
+                    temp = thingy
+            if(temp == 0):
+                print("Invalid username or password, try again.")
+                continue
+            else:
+                break
+    if accType == "u":
+        newPin = input("Enter the new pin of the user account: ")
+        cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        print(f"Successfully changed the pin of user account {logInAccID} to {newPin}") 
+        exitProgram()
+        ui_functions.backToUserSignInMenu("u")
+    else:
+        newPin = input("Enter the new pin of your admin account: ")
+        cursor.execute(f'UPDATE bank_database.admin SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
+        print(f"Successfully changed the pin of admin account {logInAccID} to {newPin}") 
+        exitProgram()
+        ui_functions.backToUserSignInMenu("a")
 
 def printOutEntireTable():
     clear_console()

@@ -20,7 +20,8 @@ def home_select():
         elif user_choice == 3:
             database_functions.logIn("a")
         elif user_choice == 4:
-            print("Thank you for using this banking system")
+            database_functions.clear_console()
+            print("Thank you for using this banking system.")
             exit()
         else:
             database_functions.clear_console()

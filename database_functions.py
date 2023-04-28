@@ -96,7 +96,7 @@ def create_account(accType):
         while True:
             while True:
                 try:
-                    pin = int(input("\nPlease enter the pin you'd like to use for your account: "))
+                    pin = int(input("Please enter the pin you'd like to use for your account: "))
                     break
                 except ValueError:
                     print("That is not a valid pin, try again.") 
@@ -120,10 +120,20 @@ def create_account(accType):
             else: 
                 continue
         cursor.execute(f"INSERT INTO bank_database.user (accountid, accountname, balance, dob, pin_code) VALUES ({accID}, \"{username}\", {amt}, \"{indob}\", {pin})")
-        print("Account successfully created!")
+        clear_console()
+        print("\nAccount successfully created!")
         connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
         logInAccID = accID
         logInACCPW = pin
+        cursor.reset()
+        cursor.execute(f"SELECT * FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}")
+        for item in cursor:
+            temp = item
+        print(f"Account ID: {temp[0]}")
+        print(f"Account Name: {temp[1]}")
+        print(f"Account DOB: {temp[2]}")
+        print(f"Account PIN: {temp[3]}")
+        print(f"Account Balance: ${temp[4]}")
         exitProgram()
         ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
@@ -157,10 +167,19 @@ def create_account(accType):
             else: 
                 continue
         cursor.execute(f"INSERT INTO bank_database.admin (accountid, accountname, dob, pin_code) VALUES ({accID}, \"{username}\", \"{indob}\", {pin})")
+        clear_console()
         print("Account successfully created!")
         connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
         logInAdminID = accID
         logInAdminPW = pin
+        cursor.reset()
+        cursor.execute(f"SELECT * FROM bank_database.admin WHERE accountid = {logInAdminID} AND pin_code = {logInAdminPW}")
+        for item in cursor:
+            temp = item
+        print(f"Admin Account ID: {temp[0]}")
+        print(f"Account Name: {temp[1]}")
+        print(f"Account DOB: {temp[2]}")
+        print(f"Admin Account PIN: {temp[3]}")
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 
@@ -322,8 +341,9 @@ def printOutEntireTable():
 
 def exitProgram():
     while True:
-        sure = str(input("Would you like keep going? y/n: "))
+        sure = str(input("\nWould you like keep going? y/n: "))
         if sure.lower() == "n":
+            clear_console()
             print("Thank you for using this banking app.")
             exit()
         elif sure.lower() == "y":

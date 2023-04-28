@@ -113,9 +113,13 @@ def create_account(accType):
                 continue
 
         while True:
+            cursor.reset()
             accID = random.randint(100000, 999999)
-            rows_count = cursor.execute(f"SELECT EXISTS(SELECT * FROM bank_database.user WHERE accountid = {accID})")
-            if(rows_count is None):
+            cursor.execute(f"SELECT EXISTS(SELECT * FROM bank_database.user WHERE accountid = {accID})")
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 break
             else: 
                 continue
@@ -160,9 +164,13 @@ def create_account(accType):
                 continue
 
         while True:
+            cursor.reset()
             accID = random.randint(100000, 999999)
-            rows_count = cursor.execute(f"SELECT EXISTS(SELECT * FROM bank_database.admin WHERE accountid = {accID})")
-            if(rows_count is None):
+            cursor.execute(f"SELECT EXISTS(SELECT * FROM bank_database.admin WHERE accountid = {accID})")
+            for item in cursor:
+                for thing in item:
+                    temp = thing
+            if(temp == 0):
                 break
             else: 
                 continue

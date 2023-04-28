@@ -17,17 +17,20 @@ logInAdminID = 0
 logInAdminPW = 0
 
 
-def clear_console():
-    os.system('cls')
 # def clear_console():
-#     os.system("clear")
+#     os.system('cls')
+def clear_console():
+    os.system("clear")
 
 def getBalance():
+    cursor.reset()
     global logInAccID
     global logInACCPW
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
-    for item in cursor:
-        print(f"Your account balance is ${item[0]}")
+    for thing in cursor:
+        for item in thing:
+            temp = item
+    print(f"Your account balance is ${temp}")
     exitProgram()
     ui_functions.backToUserSignInMenu("u")
 
@@ -311,6 +314,7 @@ def modify_name(accType, inType):
         newName = str(input("Enter the new name of the account: "))
         cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         print(f"Successfully changed the name of user account {logInAccID} to {newName}")
+        connect.commit()
         exitProgram()
         ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
@@ -318,6 +322,7 @@ def modify_name(accType, inType):
         newName = str(input("Enter the new name of the admin account: "))
         cursor.execute(f'UPDATE bank_database.admin SET accountname = \"{newName}\" WHERE accountid = {logInAdminID} AND pin_code = {logInAdminPW}')
         print(f"Successfully changed the name of account {logInAdminID} to {newName}")
+        connect.commit()
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 
@@ -344,12 +349,14 @@ def modify_pin(accType, inType):
         newPin = input("Enter the new pin of the user account: ")
         cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         print(f"Successfully changed the pin of user account {logInAccID} to {newPin}") 
+        connect.commit()
         exitProgram()
         ui_functions.backToUserSignInMenu("u")
     else:
         newPin = input("Enter the new pin of your admin account: ")
         cursor.execute(f'UPDATE bank_database.admin SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         print(f"Successfully changed the pin of admin account {logInAccID} to {newPin}") 
+        connect.commit()
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 

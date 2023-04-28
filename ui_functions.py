@@ -65,7 +65,7 @@ def logIn_select(accType):
                 database_functions.widthdraw()
                 break
             elif user_choice == 4:
-                modification_selection_menu()
+                modification_selection_menu("u")
                 break
             elif user_choice == 5:
                 database_functions.delete_account()
@@ -118,10 +118,10 @@ def modification_select(accType):
             user_choice = user_picker(av_choices)
 
             if user_choice == 1:
-                database_functions.modify_name("u")
+                database_functions.modify_name("u", 1)
                 break
             elif user_choice == 2:
-                database_functions.modify_pin("u")
+                database_functions.modify_pin("u", 1)
                 break
     else:
         av_choices = [1, 2, 3, 4]

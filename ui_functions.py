@@ -43,7 +43,7 @@ def log_in_selection_menu(accType):
         database_functions.clear_console()
         print("\nWould you like to:")
         print("1. Create a new admin account")
-        print("2. Delete an account")
+        print("2. Delete a user's account")
         print("3. Delete your account")
         print("4. Update an account's information")
         print("5. Log Out")
@@ -101,6 +101,7 @@ def modification_selection_menu(accType):
         print("\nWould you like to:")
         print("1. Update your account name")
         print("2. Update your account pin")
+        print("3. Back")
         modification_select(accType)
     else:
         database_functions.clear_console()
@@ -109,11 +110,12 @@ def modification_selection_menu(accType):
         print("2. Update your account pin")
         print("3. Update a non-admin account name")
         print("4. Update a non-admin account pin")
+        print("5. Back")
         modification_select(accType)
 
 def modification_select(accType):
     if(accType == "u"):
-        av_choices = [1, 2]
+        av_choices = [1, 2, 3]
         while True:
             user_choice = user_picker(av_choices)
 
@@ -123,31 +125,39 @@ def modification_select(accType):
             elif user_choice == 2:
                 database_functions.modify_pin("u", 1)
                 break
+            elif user_choice == 3:
+                backToUserSignInMenu("u")
+            else: 
+                print("That's not a valid choice, try again.")
     else:
-        av_choices = [1, 2, 3, 4]
+        av_choices = [1, 2, 3, 4, 5]
         while True:
             user_choice = user_picker(av_choices)
 
             if user_choice == 1:
-                database_functions.modify_name("a", 0)
+                database_functions.modify_name("a", 1)
                 break
             elif user_choice == 2:
-                database_functions.modify_pin("a", 0)
+                database_functions.modify_pin("a", 1)
                 break
             elif user_choice == 3:
-                database_functions.modify_name("u", 0)
+                database_functions.modify_name("a", 0)
                 break
             elif user_choice == 4:
-                database_functions.modify_pin("u", 0)
+                database_functions.modify_pin("a", 0)
                 break
+            elif user_choice == 5:
+                backToUserSignInMenu("a")
             else: 
                 print("That's not a valid choice, try again.")
 
 
 
 def backToUserSignInMenu(typeAcc):
-        log_in_selection_menu(typeAcc)
+    log_in_selection_menu(typeAcc)
 
+def backToUpdateMenu(typeAcc):
+    modification_selection_menu(typeAcc)
 
 def user_picker(av_choices):
     while True:

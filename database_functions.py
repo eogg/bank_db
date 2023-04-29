@@ -38,12 +38,13 @@ def deposit():
     cursor.reset()
     global logInAccID
     global logInACCPW
+    depo = 0
     while True:
         try:
             depo = int(input("\nHow much would you like to deposit into your account? "))
         except ValueError:
             print("That's not a valid amount, please try again.")
-        if depo > 0:
+        if(depo > 0):
             break
     cursor.execute(f'UPDATE bank_database.user SET balance = balance + {depo} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
     cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
@@ -73,7 +74,7 @@ def widthdraw():
             cursor.execute(f'UPDATE bank_database.user SET balance = balance - {amt} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
             cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
             for item in cursor:
-                print(f'Successfully widthdrew ${amt} to account number {logInAccID}. The new balance for account number {logInACCPW} is {item[0]}.')
+                print(f'Successfully widthdrew ${amt} to account number {logInAccID}. The new balance for account number {logInACCPW} is ${item[0]}.')
             connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
             exitProgram()
             ui_functions.backToUserSignInMenu("u")
@@ -88,8 +89,18 @@ def create_account(accType):
     global logInAdminID
     if accType == "u":
         cursor.reset()
-        username = str(input("What name would you like the account to be under? "))
-        indob = str(input("Please enter your date of birth in the format of mm/dd/yyyy. "))
+        while True:
+            username = str(input("What name would you like the account to be under? "))
+            if username == "" or username == " ":
+                print("Please enter a name.")
+            else:
+                break
+        while True:
+            indob = str(input("Please enter your date of birth in the format of mm/dd/yyyy. "))
+            if indob == "" or indob == " ":
+                print("Please enter a valid date of birth.")
+            else:
+                break
         while True:
             try:
                 amt = int(input("How much would you like to initially deposit into your account? "))
@@ -145,8 +156,18 @@ def create_account(accType):
         ui_functions.backToUserSignInMenu("u")
     elif accType == "a":
         cursor.reset()
-        username = str(input("What name would you like the account to be under? "))
-        indob = str(input("Please enter your date of birth in the format of mm/dd/yyyy. "))
+        while True:
+            username = str(input("What name would you like the account to be under? "))
+            if username == "" or username == " ":
+                print("Please enter a name.")
+            else:
+                break
+        while True:
+            indob = str(input("Please enter your date of birth in the format of mm/dd/yyyy. "))
+            if indob == "" or indob == " ":
+                print("Please enter a valid date of birth.")
+            else:
+                break
         while True:
             while True:
                 try:
@@ -227,7 +248,7 @@ def delete_account(accType, inType):
             print("\nUser account deletion not completed.")
         exitProgram()
         if inType == 1:
-            ui_functions.home_selection_menu()
+            ui_functions.backToUserSignInMenu("u")
         else:
             ui_functions.backToUserSignInMenu("a")
     elif accType == "a":
@@ -314,7 +335,12 @@ def modify_name(accType, inType):
                 break
     if accType == "u":
         clear_console()
-        newName = str(input("Enter the new name of the account: "))
+        while True:
+            newName = str(input("Enter the new name of the account: "))
+            if len(newName) > 0:
+                break
+            else:
+                print("Please enter a name.")
         cursor.execute(f'UPDATE bank_database.user SET accountname = \"{newName}\" WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         print(f"\nSuccessfully changed the name of user account {logInAccID} to {newName}")
         connect.commit()
@@ -359,7 +385,12 @@ def modify_pin(accType, inType):
             else:
                 break
     if accType == "u":
-        newPin = input("Enter the new pin of the user account: ")
+        while True:
+                try:
+                    newPin = int(input("Please enter the pin you'd like to use for your account: "))
+                    break
+                except ValueError:
+                    print("That is not a valid pin, try again.") 
         cursor.execute(f'UPDATE bank_database.user SET pin_code = {newPin} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
         print(f"\nSuccessfully changed the pin of user account {logInAccID} to {newPin}") 
         connect.commit()

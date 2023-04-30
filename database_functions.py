@@ -275,7 +275,7 @@ def delete_account(accType, inType):
             print("\nUser account deletion not completed.")
         exitProgram()
         if inType == 1:
-            ui_functions.backToUserSignInMenu("u")
+            ui_functions.home_selection_menu()
         else:
             ui_functions.backToUserSignInMenu("a")
     elif accType == "a":

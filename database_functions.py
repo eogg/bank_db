@@ -4,24 +4,30 @@ import ui_functions
 import passwordIn
 import os
 
+#CONNECTING TO MYSQL
 connect = mysql.connector.connect(
     host = "localhost",
     user = 'root',
     database = 'bank_database',
     password = passwordIn.password)
-
+#CURSOR FOR QUERIES
 cursor = connect.cursor(buffered=True)
+
+#LOG IN VARIABLES - STORE USER'S ACCOUNT NUMBER AND PIN FOR TRANSACTIONS AND MODIFICATIONS
 logInAccID = 0
 logInACCPW = 0
 logInAdminID = 0
 logInAdminPW = 0
 
-
+#CLEAR CONSOLE FOR WIN PC
 def clear_console():
     os.system('cls')
+
+#CLEAR CONSOLE FOR MACBOOK
 # def clear_console():
 #     os.system("clear")
 
+#PRINTS ACCOUNT BALANCE
 def getBalance():
     cursor.reset()
     global logInAccID
@@ -34,6 +40,7 @@ def getBalance():
     exitProgram()
     ui_functions.backToUserSignInMenu("u")
 
+#ALLOWS FOR DEPOSIT INTO USER ACCOUNT
 def deposit():
     cursor.reset()
     global logInAccID
@@ -56,7 +63,8 @@ def deposit():
     exitProgram()
     ui_functions.backToUserSignInMenu("u")
 
-def widthdraw():
+#ALLOWS FOR WITHDRAWAL FROM USER ACCOUNT
+def withdraw():
     global logInAccID
     global logInACCPW
     while True:
@@ -76,7 +84,7 @@ def widthdraw():
             cursor.execute(f'UPDATE bank_database.user SET balance = balance - {amt} WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
             cursor.execute(f'SELECT balance FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW}')
             for item in cursor:
-                print(f'\nSuccessfully widthdrew ${amt} to account number {logInAccID}. The new balance for account number {logInACCPW} is ${item[0]}.')
+                print(f'\nSuccessfully withdrew ${amt} to account number {logInAccID}. The new balance for account number {logInACCPW} is ${item[0]}.')
             connect.commit() #ESSENTIAL PIECE OF CODE TO ENSURE CHANGES ARE PERMANENT!
             exitProgram()
             ui_functions.backToUserSignInMenu("u")
@@ -85,7 +93,8 @@ def widthdraw():
             print("That is not a valid amount, please try again.")
         else:
             print("The amount of money you're trying to withdraw is larger than your balance, please try again.")
-    
+
+#CREATES ACCOUNT USING {accType}, WHICH CHOOSES WHAT TYPE OF ACCOUNT TO BE MADE
 def create_account(accType):
     global logInAccID
     global logInACCPW
@@ -222,6 +231,7 @@ def create_account(accType):
         exitProgram()
         ui_functions.backToUserSignInMenu("a")
 
+#DELES ACCOUNT USING {accType}, WHICH LETS ADMIN ACCOUNTS DELETE USER ACCOUNTS
 def delete_account(accType, inType):
     global logInAccID
     global logInACCPW
@@ -282,6 +292,7 @@ def delete_account(accType, inType):
         exitProgram()
         ui_functions.home_selection_menu()
 
+#LOGS IN
 def logIn(accType):
     global logInAccID
     global logInACCPW
@@ -323,7 +334,8 @@ def logIn(accType):
         for item in cursor:
             print(f"Successfully logged into {item[0]}'s account.")
         ui_functions.backToUserSignInMenu("a")
-        
+
+#LOGS OUT AND RETURNS TO HOME MENU     
 def logOut():
     global logInAccID
     global logInACCPW
@@ -331,6 +343,7 @@ def logOut():
     logInAccID = 0
     ui_functions.home_selection_menu()
 
+#ALLOWS FOR THE MODIFICATION OF ACCOUNT NAMES, ADMIN CAN CHANGE BOTH THEIR NAME AND A USER'S NAME
 def modify_name(accType, inType):
     global logInAccID
     global logInACCPW
@@ -391,6 +404,7 @@ def modify_name(accType, inType):
         exitProgram()
         ui_functions.backToUpdateMenu("a")
 
+#ALLOWS FOR THE MODIFICATION OF ACCOUNT PINS, ADMIN CAN CHANGE BOTH THEIR PIN AND A USER'S PIN
 def modify_pin(accType, inType):
     global logInAccID
     global logInACCPW
@@ -400,17 +414,17 @@ def modify_pin(accType, inType):
         while True:
             cursor.reset()
             while True:
-                try: 
-                    logInAccID = input("Please enter the user's account ID: ")
+                try:
+                    logInAccID = int(input("Please enter the user's account ID: "))
                     break
                 except ValueError:
-                    print("That is not a valid account ID, please try again.")
+                    print("Please enter a valid account ID.")
             while True:
-                try: 
-                    logInACCPW = input("Please enter the user's account PIN: ")
+                try:
+                    logInACCPW = int(input("Please enter the user's account PIN: "))
                     break
                 except ValueError:
-                    print("That is not a valid account account PIN, please try again.")
+                    print("Please enter a valid account PIN.")
             cursor.execute(f'SELECT EXISTS(SELECT accountid FROM bank_database.user WHERE accountid = {logInAccID} AND pin_code = {logInACCPW})')
             for item in cursor:
                 for thing in item:
@@ -448,6 +462,7 @@ def modify_pin(accType, inType):
         exitProgram()
         ui_functions.backToUpdateMenu("a")
 
+#PRINTS OUT THE ENTIRE TABLE
 def printOutEntireTable():
     clear_console()
     testQuery = ("SELECT * FROM bank_database.user")
@@ -457,6 +472,7 @@ def printOutEntireTable():
             print(thing, end = ", ")
         print()
 
+#PROMTS ASKING IF THEY WANT TO EXIT, IF INPUT "y" == PROGRAM WILL BE EXITED.
 def exitProgram():
     while True:
         sure = str(input("\nWould you like keep going? y/n: "))

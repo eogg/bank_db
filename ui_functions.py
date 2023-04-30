@@ -1,5 +1,6 @@
 import database_functions
 
+#DISPLAYS HOME MENU
 def home_selection_menu():
     database_functions.clear_console()
     print("\nWould you like to:")
@@ -9,6 +10,7 @@ def home_selection_menu():
     print("4. Exit baking system")
     home_select()
 
+#ALLOWS FOR SELECTION FROM HOME MENU
 def home_select():
     av_choices = [1, 2, 3, 4]
     while True:
@@ -27,14 +29,14 @@ def home_select():
             database_functions.clear_console()
 
 
-
+#DISPLAYS LOG_IN MENU, DEPENDING ON WHAT TYPE OF LOG IN WAS MADE USING {accType}
 def log_in_selection_menu(accType):
     if(accType == "u"):
         database_functions.clear_console()
         print("\nWould you like to:")
         print("1. Get balance")
         print("2. Make a deposit")
-        print("3. Widthdraw from account")
+        print("3. Withdraw from account")
         print("4. Update account information")
         print("5. Delete account")
         print("6. Log out")
@@ -49,6 +51,7 @@ def log_in_selection_menu(accType):
         print("5. Log Out")
         logIn_select(accType)
 
+#ALLOWS FOR SELECTION FROM LOG IN MENU USING {accType} TO FIGURE OUT WHAT TYPE OF ACCOUNT IS LOGGED IN
 def logIn_select(accType):
     if(accType == "u"):
         av_choices = [1, 2, 3, 4, 5, 6]
@@ -62,7 +65,7 @@ def logIn_select(accType):
                 database_functions.deposit()
                 break
             elif user_choice == 3:
-                database_functions.widthdraw()
+                database_functions.withdraw()
                 break
             elif user_choice == 4:
                 modification_selection_menu("u")
@@ -94,7 +97,7 @@ def logIn_select(accType):
                 print("That is not a valid choice, please try again.")
 
 
-
+#DISPLAYS ACCOUNT MODIFICATION MENU ACCORDING TO {accType}
 def modification_selection_menu(accType):
     if(accType == "u"):
         database_functions.clear_console()
@@ -113,6 +116,7 @@ def modification_selection_menu(accType):
         print("5. Back")
         modification_select(accType)
 
+#ALLOWS FOR SELECTION FROM ACCOUNT MODIFICATION MENY ACCORDING TO {accType}
 def modification_select(accType):
     if(accType == "u"):
         av_choices = [1, 2, 3]
@@ -152,13 +156,15 @@ def modification_select(accType):
                 print("That's not a valid choice, try again.")
 
 
-
+#TAKES USER BACK TO SIGN IN MENU ACCORDING TO {typeAcc}
 def backToUserSignInMenu(typeAcc):
     log_in_selection_menu(typeAcc)
 
+#TAKES USER BACK TO UPDATE MENU ACCORDING TO {typeAcc}
 def backToUpdateMenu(typeAcc):
     modification_selection_menu(typeAcc)
 
+#FACILITATES THE USE OF PICKING THE OPTIONS FROM THE SELECTIONS.
 def user_picker(av_choices):
     while True:
         try:
